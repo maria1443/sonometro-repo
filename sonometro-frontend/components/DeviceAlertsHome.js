@@ -269,9 +269,9 @@ const DeviceAlertsHome = ({ device_id }) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                       dataKey="created"
-                      label={{ value: "Tiempo (mm:ss)", position: "bottom" }}
+                      label={{ value: "Tiempo (hh:mm)", position: "bottom" }}
                       tickFormatter={(timeStr) =>
-                        moment(new Date(parseInt(timeStr))).format("mm:ss")
+                        moment(new Date(parseInt(timeStr))).format("hh:mm")
                       }
                     />
                     <YAxis

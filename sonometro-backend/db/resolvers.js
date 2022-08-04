@@ -338,7 +338,7 @@ const resolvers = {
         {
           _id: new ObjectID(device_id),
         },
-        { projection: { alerts: 1 } }
+        { projection: { alerts: 1, name: 1, level1: 1, level2: 1 } }
       );
 
       const avgStdAlertAverage = DAO.collection("measurements")
@@ -369,6 +369,7 @@ const resolvers = {
 
       const findMeasurementsPromConnection = DAO.collection("measurements")
         .aggregate([
+          { $sort: { created: 1 } },
           {
             $match: {
               type: { $ne: "ALERT" },
@@ -555,6 +556,7 @@ const resolvers = {
 
       const alerts = await DAO.collection("measurements")
         .aggregate([
+          { $sort: { created: 1 } },
           {
             $match: {
               device_id: new ObjectID(device_id),
@@ -627,32 +629,42 @@ const resolvers = {
           projection: {
             level1: 1,
             level2: 1,
+            alerts: 1,
           },
         }
       );
 
-      if (levelsDevice) {
-        data["level1_id"] = levelsDevice.level1._id;
-        data["level2_id"] = levelsDevice.level2._id;
-        data["device_id"] = levelsDevice._id;
-      } else {
-        data["level1_id"] = undefined;
-        data["level2_id"] = undefined;
-        data["device_id"] = undefined;
-      }
+      if (data["value"] >= parseFloat(levelsDevice.alerts.level2)) {
+        if (levelsDevice) {
+          data["level1_id"] = levelsDevice.level1._id;
+          data["level2_id"] = levelsDevice.level2._id;
+          data["device_id"] = levelsDevice._id;
+        } else {
+          data["level1_id"] = undefined;
+          data["level2_id"] = undefined;
+          data["device_id"] = undefined;
+        }
 
-      const insertManyDB = await DAO.collection("measurements").insertOne(data);
+        const insertManyDB = await DAO.collection("measurements").insertOne(
+          data
+        );
 
-      if (!insertManyDB.result.ok) {
-        response = {
-          state: false,
-          message: "Hubo un error en guardar los datos",
-        };
+        if (!insertManyDB.result.ok) {
+          response = {
+            state: false,
+            message: "Hubo un error en guardar los datos",
+          };
+        } else {
+          console.log("Guardó correctamente");
+          response = {
+            state: true,
+            message: "Los datos fueron guardados correctamente",
+          };
+        }
       } else {
-        console.log("Guardó correctamente");
         response = {
           state: true,
-          message: "Los datos fueron guardados correctamente",
+          message: "Los datos no superaron el umbral",
         };
       }
 

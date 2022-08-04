@@ -34,6 +34,13 @@ const GET_DEVICE_INFO_DATE_RANGE_HOME = gql`
           }
         }
         device {
+          name
+          level1 {
+            name
+          }
+          level2 {
+            name
+          }
           alerts {
             level1
             level2
@@ -122,7 +129,26 @@ const DeviceHome = () => {
     <Layout>
       <div className="flex justify-between">
         <div>
-          <h2 className="text-2xl text-gray-800 font-light mt-5">Equipo 1</h2>
+          {data && data.getDeviceInfoDateRangeHome.state ? (
+            <h2 className="text-2xl text-gray-800 font-light mt-5">
+              {data.getDeviceInfoDateRangeHome.data.device.level1.name}
+              {" >> "}
+              {data.getDeviceInfoDateRangeHome.data.device.level2.name}
+              {" >> "}
+              {data.getDeviceInfoDateRangeHome.data.device.name}
+            </h2>
+          ) : (
+            <>
+              <div style={{ marginLeft: "40%" }}>
+                <Loader
+                  type="ThreeDots"
+                  color="#2d3748;"
+                  height="100"
+                  width="100"
+                />
+              </div>
+            </>
+          )}
         </div>
 
         <div style={{ marginRight: "10%" }}>
