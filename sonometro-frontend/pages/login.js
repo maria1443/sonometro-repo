@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -21,6 +21,13 @@ const Login = () => {
   const router = useRouter();
   const [message, saveMessage] = useState(null);
   const [authUser] = useMutation(AUTH_USER);
+
+  useEffect(() => {
+    if (localStorage.getItem("reload")) {
+      localStorage.removeItem("reload");
+      router.reload();
+    }
+  }, []);
 
   const formik = useFormik({
     initialValues: {

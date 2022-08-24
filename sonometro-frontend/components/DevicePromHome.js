@@ -86,7 +86,7 @@ const DevicePromHome = ({ prom, promAverage, deviceAlerts }) => {
               legendType="none"
               fill="#718BA6"
             />
-            <ReferenceLine y={parseInt(deviceAlerts.level1)} stroke="green" isFront={true} />
+            {/*<ReferenceLine y={parseInt(deviceAlerts.level1)} stroke="green" isFront={true} />*/}
             <ReferenceLine y={parseInt(deviceAlerts.level2)} stroke="yellow" isFront={true}/>
             <ReferenceLine y={parseInt(deviceAlerts.level3)} stroke="red" isFront={true} />
             <ReferenceLine

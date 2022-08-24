@@ -105,7 +105,7 @@ const DeviceHome = ({ level2 }) => {
                     legendType="none"
                     fill="#8884d8"
                   />
-                  <ReferenceLine y={40} stroke="green" isFront={true} />
+                  {/*<ReferenceLine y={40} stroke="green" isFront={true} />*/}
                   <ReferenceLine y={80} stroke="yellow" isFront={true} />
                   <ReferenceLine y={120} stroke="red" isFront={true} />
                   <ReferenceLine

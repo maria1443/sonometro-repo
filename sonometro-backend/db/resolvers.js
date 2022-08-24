@@ -2,6 +2,34 @@ const DAO = require("../config/db");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "variables.env" });
 const ObjectID = require("mongodb").ObjectID;
+const schedule = require("node-schedule");
+
+const job = schedule.scheduleJob("0 1 * * *", function () {
+  console.log(
+    "Se procede a limpiar la Base de Datos. Se dejan registros de medidas de los últimos 3 meses"
+  );
+  const today = new Date();
+  const before3Months = new Date(today.setMonth(today.getMonth() - 3));
+  console.log(
+    "Se eliminarán los registros de medidas anteriores a: " +
+      before3Months.toLocaleDateString()
+  );
+
+  async function run() {
+    try {
+      const deleteMeasurements = DAO.collection("measurements");
+
+      const query = { created: { $lte: before3Months } };
+
+      const result = await deleteMeasurements.deleteMany(query);
+
+      console.log("Deleted " + result.deletedCount + " measurements");
+    } finally {
+      console.log("Eliminación completada");
+    }
+  }
+  run().catch(console.dir);
+});
 
 const createToken = (user, secretWord, expiresIn) => {
   //console.log(user);

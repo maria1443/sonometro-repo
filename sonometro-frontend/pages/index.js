@@ -5,6 +5,7 @@ import Level1Home from "../components/Level1Home";
 import RangeDatePicker from "../components/RangeDatePicker";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { useRouter } from "next/router";
 
 const GET_MEAN_LEVELS1 = gql`
   query getMeanLevels1($input: GetMeanLevels1Input) {
@@ -26,6 +27,7 @@ const GET_MEAN_LEVELS1 = gql`
 `;
 
 const Index = () => {
+  const router = useRouter();
   const [startDate, setStartDate] = useState(
     new Date(
       new Date().getFullYear(),
@@ -70,6 +72,13 @@ const Index = () => {
   if (!loading) {
     console.log("data");
     console.log(data);
+    if (data) {
+      if (data.getMeanLevels1.state == false) {
+        localStorage.removeItem("token");
+        localStorage.setItem("reload", true);
+        router.push("/login");
+      }
+    }
   }
 
   const onChange = (dates) => {

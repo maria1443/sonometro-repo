@@ -298,7 +298,7 @@ const DeviceAlertsHome = ({ device_id }) => {
                       legendType="none"
                       fill="#8884d8"
                     />
-                    <ReferenceLine y={data.getDeviceInfoByAlert.data.device.alerts.level1} stroke="green" isFront={true} />
+                    {/*<ReferenceLine y={data.getDeviceInfoByAlert.data.device.alerts.level1} stroke="green" isFront={true} />*/}
                     <ReferenceLine y={data.getDeviceInfoByAlert.data.device.alerts.level2} stroke="yellow" isFront={true} />
                     <ReferenceLine y={data.getDeviceInfoByAlert.data.device.alerts.level3} stroke="red" isFront={true} />
                     <ReferenceLine
